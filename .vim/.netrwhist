@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =1
+let g:netrw_dirhist_1='/Users/fox/projetos/most important/ecg/code/zettaHardware/monolith/main'
+let g:netrw_dirhist_0='/Users/fox/code/obi/2022f2'
+let g:netrw_dirhist_9='/Users/fox/code/obi'
+let g:netrw_dirhist_8='/Users/fox/code/obi/2022f2'
+let g:netrw_dirhist_7='/Users/fox/code/obi/2021f3n2'
+let g:netrw_dirhist_6='/Users/fox/code/codeforces/Crossmarket'
+let g:netrw_dirhist_5='/Users/fox/code/ctf/askj'
+let g:netrw_dirhist_4='/Users/fox/code/tritium/src'
+let g:netrw_dirhist_3='/Users/fox/code/tritium'
+let g:netrw_dirhist_2='/Users/fox/code'
