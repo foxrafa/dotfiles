@@ -8,10 +8,10 @@ snow() {
     sudo python3 ~/code/snowdenConfig/start.py
 
   elif [[ $# = 1 && $1 = 'stop' ]]; then
-    gcloud compute instances stop snowden-v2-1 --zone='southamerica-east1-b'
+    gcloud compute instances stop snow --project='quick-intro' --zone='us-central1-a'
 
   elif [[ $# = 1 && $1 = 'status' ]]; then
-    echo;gcloud compute instances describe snowden-v2-1 --format='get(status)' --zone='southamerica-east1-b'
+    gcloud compute instances describe snow --project='quick-intro' --format='get(status)' --zone='us-central1-a'
 
   fi	
 }
@@ -36,10 +36,16 @@ alias startsnow='~/code/snowdenConfig/start.py'
 tmplt() {
   if (( $# == 0 )); then
     cp ~/code/cpe/template/template.cpp template.cpp
-
   else
-    cp ~/code/cpe/template/template.cpp $1
-
+    if [[ $1 = 'l' ]] then
+      if (( $# == 1 )); then
+        cp ~/code/cpe/template/leet_code_template.cpp template.cpp
+      else
+        cp ~/code/cpe/template/leet_code_template.cpp $2
+      fi
+    else
+      cp ~/code/cpe/template/template.cpp $1
+    fi
   fi
 }
 
@@ -94,14 +100,14 @@ deploy() {
   echo done!
 }
 
-alias vim='/usr/local/bin/vim'
+alias vim='nvim'
 
 v() {
   if (( $# == 0 )); then
-    vim ./
+    nvim ./
 
   elif [[ $# = 1 ]]; then
-    vim ./$1
+    nvim ./$1
 
   fi
 }

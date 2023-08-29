@@ -16,10 +16,8 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 
 	ln -s ~/dotfiles/.zprofile ~/.zprofile
 	ln -s ~/dotfiles/.zshrc ~/.zshrc
-	ln -s ~/dotfiles/.oh-my-zsh ~/.oh-my-zsh
-	ln -s ~/dotfiles/.vimrc ~/.vimrc
-	ln -s ~/dotfiles/.vim ~/.vim
 	ln -s ~/dotfiles/.zsh ~/.zsh
+	ln -s ~/dotfiles/.config/nvim ~/.config/nvim
 
 	sudo apt update && sudo apt install python3 nodejs git htop build-essential
 fi
