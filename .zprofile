@@ -32,6 +32,8 @@ alias pip='pip3'
 alias gli='gcloud compute instances list --format="table(name, networkInterfaces[].ipv6AccessConfigs[0].externalIpv6.notnull().list():label=EXTERNAL_IPV6, status)"'
 
 alias startsnow='~/code/snowdenConfig/start.py'
+alias get_idf='. $HOME/esp/esp-idf/export.sh'
+#alias idf='~/esp/esp-idf/tools/idf.py'
 
 tmplt() {
   if (( $# == 0 )); then
@@ -131,3 +133,5 @@ alias vs='open -a "Visual Studio Code"'
 
 alias simu='open /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app'
 alias icat='viu'
+
+alias tx='cp ~/code/latex/template.tex .'
