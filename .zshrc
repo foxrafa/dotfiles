@@ -1,3 +1,5 @@
+export PATH="/opt/homebrew/Cellar/bison/3.8.2/bin:$PATH"
+
 DEFAULT_USER=”$”
 COMPLETION_WAITING_DOTS="true"
 

@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+export PATH="/opt/homebrew/bin:$PATH"
+
 snow() {
   if (( $# == 0 )); then
     ssh -i ~/.ssh/server snowdenserveripadress
@@ -134,4 +136,4 @@ alias vs='open -a "Visual Studio Code"'
 alias simu='open /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app'
 alias icat='viu'
 
-alias tx='cp ~/code/latex/template.tex .'
+alias tx='cp ~/CMU/template.tex .'

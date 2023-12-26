@@ -219,10 +219,10 @@ nnoremap <Leader>R :VimspectorResetAndRestart<CR>
 nnoremap mm :lua require("harpoon.mark").add_file()<CR>
 nnoremap M :lua require("harpoon.ui").toggle_quick_menu()<CR>
 
-nnoremap §n :lua require("harpoon.ui").nav_file(1)<CR>
-nnoremap §j :lua require("harpoon.ui").nav_file(2)<CR>
-nnoremap §k :lua require("harpoon.ui").nav_file(3)<CR>
-nnoremap §l :lua require("harpoon.ui").nav_file(4)<CR>
+nnoremap <F5> :lua require("harpoon.ui").nav_file(1)<CR>
+nnoremap <F6> :lua require("harpoon.ui").nav_file(2)<CR>
+nnoremap <F7> :lua require("harpoon.ui").nav_file(3)<CR>
+nnoremap <F8> :lua require("harpoon.ui").nav_file(4)<CR>
 
 
 call plug#begin()
@@ -268,6 +268,7 @@ lsp.ensure_installed({
 })
 
 local lspconfig = require'lspconfig'
+
 lspconfig.clangd.setup {
 	cmd = {"/Users/fox/code/espressif/esp-clang/bin/clangd"}
 }
