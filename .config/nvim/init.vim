@@ -60,7 +60,7 @@ nnoremap <leader>w :w<CR>
 nnoremap <leader>W :w<CR>
 command WW w !sudo tee % > /dev/null
 
-
+vnoremap <leader>y y:OSCYankVisual<CR>
 
 nnoremap <leader>n :NERDTreeToggle<CR>
 nnoremap <leader>f :Files<CR>
@@ -253,7 +253,7 @@ Plug 'puremourning/vimspector'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'ThePrimeagen/harpoon'
 
-Plug 'github/copilot.vim'
+Plug 'ojroques/vim-oscyank'
 call plug#end()
 
 lua <<EOF
