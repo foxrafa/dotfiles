@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-export PATH="/opt/homebrew/bin:/opt/nvim/:$PATH"
+export PATH="/opt/homebrew/bin:/opt/nvim/:/opt/nvim-linux64/bin:$PATH"
 
 snow() {
   if (( $# == 0 )); then
