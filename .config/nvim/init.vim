@@ -111,8 +111,7 @@ set ttimeoutlen=20
 
 function! MyTabLine()
 	let s = ''
-	for i in range(tabpagenr('$'))
-		" select the highlighting
+	for i in range(tabpagenr('$')) " select the highlighting
 		if i + 1 == tabpagenr()
 			let s .= '%#TabLineSel#'
 		else
@@ -253,6 +252,8 @@ Plug 'puremourning/vimspector'
 
 Plug 'nvim-lua/plenary.nvim'
 Plug 'ThePrimeagen/harpoon'
+
+Plug 'github/copilot.vim'
 call plug#end()
 
 lua <<EOF
