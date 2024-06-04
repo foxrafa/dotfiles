@@ -6,6 +6,7 @@ noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
 
+
 let mapleader = "\<Space>"
 set relativenumber
 set showcmd
@@ -58,6 +59,7 @@ autocmd BufReadPost *
 
 nnoremap <leader>w :w<CR>
 nnoremap <leader>W :w<CR>
+nnoremap <leader>g :Format<CR>
 command WW w !sudo tee % > /dev/null
 
 vnoremap <leader>y y:OSCYankVisual<CR>
@@ -223,7 +225,6 @@ nnoremap <F6> :lua require("harpoon.ui").nav_file(2)<CR>
 nnoremap <F7> :lua require("harpoon.ui").nav_file(3)<CR>
 nnoremap <F8> :lua require("harpoon.ui").nav_file(4)<CR>
 
-
 call plug#begin()
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -254,6 +255,8 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'ThePrimeagen/harpoon'
 
 Plug 'ojroques/vim-oscyank'
+
+Plug 'mhartington/formatter.nvim'
 call plug#end()
 
 lua <<EOF
@@ -277,17 +280,14 @@ lspconfig.clangd.setup {
 local cmp = require('cmp')
 local cmp_select = {behavior = cmp.SelectBehavior.Select}
 local cmp_mappings = lsp.defaults.cmp_mappings({
---['<C-k>'] = cmp.mapping.select_prev_item(cmp_select),
---['<C-j>'] = cmp.mapping.select_next_item(cmp_select),
-["<C-Space>"] = cmp.mapping.complete(),
 ['<Tab>'] = function(fallback)
-print(cmp.visible())
-if cmp.visible() then
-	cmp.confirm({ select = true })
-else
-	fallback()
-	end
-	end,
+	print(cmp.visible())
+	if cmp.visible() then
+		cmp.confirm({ select = true })
+	else
+		fallback()
+		end
+		end,
 })
 
 lsp.setup_nvim_cmp({
@@ -295,11 +295,11 @@ mapping = cmp_mappings
 })
 
 lsp.set_preferences({
-suggest_lsp_servers = false,
-sign_icons = {
-	error = '❌',
-	warn = '⚠️',
-}
+	suggest_lsp_servers = false,
+	sign_icons = {
+		error = '❌',
+		warn = '⚠️',
+	}
 })
 
 lsp.on_attach(function(client, bufnr)
@@ -309,4 +309,17 @@ vim.keymap.set("n", "<leader>r", function() vim.lsp.buf.rename() end, opts)
 end)
 
 lsp.setup()
+
+local util = require "formatter.util"
+
+require("formatter").setup {
+  filetype = {
+    javascript = {
+      require("formatter.filetypes.javascript").prettier
+    },
+    javascriptreact = {
+      require("formatter.filetypes.javascriptreact").prettier
+    },
+  }
+}
 EOF

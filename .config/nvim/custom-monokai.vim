@@ -24,6 +24,8 @@ let g:monokai_termcolors = 256 " does not support 16 color term right now.
 
 set background=dark
 hi clear
+colorscheme vim
+set notermguicolors
 
 if exists("syntax_on")
   syntax reset

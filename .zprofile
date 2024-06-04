@@ -1,6 +1,7 @@
 #!/bin/zsh
 
-export PATH="/opt/homebrew/bin:/opt/nvim/:/opt/nvim-linux64/bin:$PATH"
+export PATH="/opt/homebrew/bin:/opt/nvim/:/opt/nvim-linux64/bin:/opt/homebrew/bin/magick:$PATH"
+export DYLD_LIBRARY_PATH="/opt/homebrew/lib:/opt/homebrew/bin:$DYLD_LIBRARY_PATH"
 
 snow() {
   if (( $# == 0 )); then
@@ -20,6 +21,7 @@ snow() {
 
 source ~/.zsh/jumplist.zsh
 
+alias nr='npm run'
 alias rld='source ~/.zprofile'
 alias l='ls -la'
 alias sb='open -a "Sublime Text"' 
