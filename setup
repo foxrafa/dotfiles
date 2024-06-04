@@ -15,7 +15,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 		echo "Zsh is already installed."
 	fi
 
-	sudo apt-get install git build-essential ripgrep pip nvim
+	sudo apt-get install git build-essential ripgrep pip neovim
 
 	ln -s ~/dotfiles/.zprofile ~/.zprofile
 	ln -s ~/dotfiles/.zshrc ~/.zshrc
