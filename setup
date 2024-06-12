@@ -17,6 +17,14 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 
 	sudo apt-get install git build-essential ripgrep pip neovim
 
+	wget https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
+	tar xzf nvim-linux64.tar.gz
+	sudo mv nvim-linux64/bin/nvim /usr/local/bin/
+	rm -rf nvim-linux64 nvim-linux64.tar.gz
+
+	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+	#nvm install 21
+
 	ln -s ~/dotfiles/.zprofile ~/.zprofile
 	ln -s ~/dotfiles/.zshrc ~/.zshrc
 	ln -s ~/dotfiles/.zsh ~/.zsh
