@@ -15,7 +15,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 		echo "Zsh is already installed."
 	fi
 
-	sudo apt-get install git build-essential ripgrep pip neovim
+	sudo apt-get install git build-essential ripgrep pip neovim libssl-dev
 
 	wget https://github.com/neovim/neovim/releases/download/v0.10.0/nvim-linux64.tar.gz
 	tar xzf nvim-linux64.tar.gz
@@ -24,6 +24,13 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 	#nvm install 21
+
+	wget https://www.python.org/ftp/python/3.12.3/Python-3.12.3.tgz
+	tar -xvf Python-3.12.3.tgz
+
+	#sudo add-apt-repository ppa:deadsnakes/ppa
+	#sudo apt-get update
+	#sudo apt-get install python3.12
 
 	ln -s ~/dotfiles/.zprofile ~/.zprofile
 	ln -s ~/dotfiles/.zshrc ~/.zshrc
