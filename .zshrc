@@ -70,6 +70,7 @@ alias jn='jupyter notebook'
 alias sb='open -a "Sublime Text"'
 
 # Misc aliases
+alias d='vim /Users/fox/notes/do.md'
 alias box='gcloud compute ssh box-rafa'
 alias lbox='multipass shell ubuntu'
 
@@ -124,6 +125,7 @@ ones() {
 }
 
 # Neovim shortcut
+alias vim='nvim'
 v() {
   if (( $# == 0 )); then
     nvim ./

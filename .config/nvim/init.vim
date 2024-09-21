@@ -106,6 +106,7 @@ nnoremap <leader>9 :tabnext 9<CR>
 
 " Other mappings
 nnoremap D dd
+nnoremap C 0c$
 inoremap { {}<Esc>ha
 command WW w !sudo tee % > /dev/null
 
@@ -124,7 +125,7 @@ nnoremap M9 '9
 " NERDTree
 let g:NERDTreeQuitOnOpen = 1
 autocmd BufEnter NERD_tree_* | execute 'normal R'
-nnoremap <leader>n :NERDTreeToggle<CR>
+"nnoremap <leader>n :NERDTreeToggle<CR>
 
 " FZF
 nnoremap <leader>f :Files<CR>
@@ -317,7 +318,7 @@ local lsp = require('lsp-zero').preset("recommended")
 
 lsp.ensure_installed({
 'bashls',
-'tsserver',
+'ts_ls',
 'pyright',
 'vimls',
 'lua_ls'
