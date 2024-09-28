@@ -53,7 +53,7 @@ alias ga='gcloud auth application-default login; gcloud auth login'
 alias gli='gcloud compute instances list --format="table(name, networkInterfaces[].ipv6AccessConfigs[0].externalIpv6.notnull().list():label=EXTERNAL_IPV6, status)"'
 
 # Filesystem and navigation aliases
-alias refresh='source ~/.zprofile'
+alias refresh='source ~/.zshrc'
 alias t='tree'
 alias l='ls -la'
 alias code='cd ~/code'
