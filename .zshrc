@@ -4,6 +4,7 @@ export PATH="$PATH:/Users/fox/bin:/opt/homebrew/bin:/opt/nvim/:/opt/nvim-linux64
 export DYLD_LIBRARY_PATH="/opt/homebrew/lib:/opt/homebrew/bin:$DYLD_LIBRARY_PATH"
 
 # ===== History Settings =====
+HISTFILE=~/.zsh_history
 HISTSIZE=3000000
 SAVEHIST=3000000
 setopt EXTENDED_HISTORY
