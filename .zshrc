@@ -82,7 +82,9 @@ ds() {
   if [ -z "$running" ]; then
     echo "No running containers."
   else
-    docker stop $running && echo "All containers stopped." || echo "Error stopping containers."
+    echo "Stopping containers:"
+    echo "$running" | xargs -r docker stop
+    echo "All containers stopped."
   fi
 }
 
