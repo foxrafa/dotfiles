@@ -43,14 +43,19 @@ fi
 # Git aliases
 alias gv='open -a fork .'
 alias gb='git checkout'
+alias gu='gitui'
+alias s='lazysql'
 
 # Kubernetes aliases
-alias gke='kubectl --context=gke-cluster'
-alias vke='kubectl --context=vke-cluster'
+alias gke='kubectl --context=staging-gke-cluster'
+alias vke='kubectl --context=production-vke-cluster'
+alias production_gke='kubectl --context=production-gke-cluster'
+alias production_vke='kubectl --context=production-vke-cluster'
 
 # Google Cloud aliases
 alias ga='gcloud auth application-default login; gcloud auth login'
 alias gli='gcloud compute instances list --format="table(name, networkInterfaces[].ipv6AccessConfigs[0].externalIpv6.notnull().list():label=EXTERNAL_IPV6, status)"'
+alias ping='gping'
 
 # Filesystem and navigation aliases
 alias refresh='source ~/.zshrc'
@@ -100,10 +105,19 @@ gp() {
   git push origin "$branch"
 }
 
+gpull() {
+  branch=$(git rev-parse --abbrev-ref HEAD)
+  git pull origin "$branch"
+}
+
 # Create and clone a new GitHub repository
 gn() {
   gh repo create $1 --private
   git clone https://github.com/$1.git
+  v
+  echo "Unmounting after nvim closed..."
+  cd
+  hdiutil detach "$VOLUME" -force
 }
 
 # Mount/unmount a disk image
@@ -126,6 +140,8 @@ ones() {
     return 1
   fi
 }
+
+alias n='cd ~/notes && nvim .'
 
 # Neovim shortcut
 alias vim='nvim'
@@ -159,6 +175,7 @@ autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
+source /Users/fox/.askdjaskjdnaksdna
 bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
 bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
 bindkey "^[[A" up-line-or-beginning-search

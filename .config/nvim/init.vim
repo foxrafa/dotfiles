@@ -277,13 +277,126 @@ call plug#begin()
 	Plug 'lukas-reineke/indent-blankline.nvim'
 	Plug 'b0o/schemastore.nvim'
 	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+	Plug 'MeanderingProgrammer/render-markdown.nvim'
+	Plug 'stevearc/dressing.nvim'
+	Plug 'nvim-lua/plenary.nvim'
+	Plug 'MunifTanjim/nui.nvim'
+	Plug 'yetone/avante.nvim', { 'branch': 'main', 'do': 'make' }
 call plug#end()
+
+autocmd! User avante.nvim
 
 " ========== Source Custom Colorscheme ==========
 source ~/.config/nvim/custom-monokai.vim
 
 " ========== Lua Configuration ==========
 lua <<EOF
+
+require('render-markdown').setup({
+	file_types = { "markdown", "Avante" },
+})
+
+require('avante_lib').load()
+require('avante').setup({
+  ---@alias Provider "claude" | "openai" | "azure" | "gemini" | "cohere" | "copilot" | string
+  provider = "claude", -- Recommend using Claude
+  auto_suggestions_provider = "copilot", -- Since auto-suggestions are a high-frequency operation and therefore expensive, it is recommended to specify an inexpensive provider or even a free provider: copilot
+  claude = {
+    endpoint = "https://api.anthropic.com",
+    model = "claude-3-5-sonnet-20240620",
+    temperature = 0,
+    max_tokens = 4096,
+  },
+  behaviour = {
+    auto_suggestions = true, -- Experimental stage
+    auto_set_highlight_group = true,
+    auto_set_keymaps = true,
+    auto_apply_diff_after_generation = true,
+    support_paste_from_clipboard = false,
+  },
+  mappings = {
+    diff = {
+      ours = "co",
+      theirs = "ct",
+      all_theirs = "ca",
+      both = "cb",
+      cursor = "cc",
+      next = "]x",
+      prev = "[x",
+    },
+    suggestion = {
+      accept = "<M-l>",
+      next = "<M-]>",
+      prev = "<M-[>",
+      dismiss = "<C-]>",
+    },
+    jump = {
+      next = "]]",
+      prev = "[[",
+    },
+    submit = {
+      normal = "<CR>",
+      insert = "<C-s>",
+    },
+    sidebar = {
+      apply_all = "A",
+      apply_cursor = "a",
+      switch_windows = "<Tab>",
+      reverse_switch_windows = "<S-Tab>",
+    },
+  },
+  hints = { enabled = true },
+  windows = {
+    ---@type "right" | "left" | "top" | "bottom"
+    position = "right", -- the position of the sidebar
+    wrap = true, -- similar to vim.o.wrap
+    width = 40, -- default % based on available width
+    sidebar_header = {
+      align = "center", -- left, center, right for title
+      rounded = true,
+    },
+  },
+  highlights = {
+    ---@type AvanteConflictHighlights
+    diff = {
+      current = "DiffText",
+      incoming = "DiffAdd",
+    },
+  },
+  --- @class AvanteConflictUserConfig
+  diff = {
+    autojump = true,
+    ---@type string | fun(): any
+    list_opener = "copen",
+  },
+})
+
+local cmp = require('cmp')
+local lsp = require('lsp-zero')
+
+local function check_back_space()
+    local col = vim.fn.col('.') - 1
+    return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') ~= nil
+end
+
+local cmp_mappings = lsp.defaults.cmp_mappings({
+    ['<Tab>'] = function(fallback)
+        if cmp.visible() then
+            cmp.confirm({ select = true })
+        elseif require('copilot.suggestion').is_visible() then
+            require('copilot.suggestion').accept()
+        elseif check_back_space() then
+            fallback()
+        else
+            cmp.complete()
+        end
+    end,
+})
+
+lsp.setup_nvim_cmp({
+    mapping = cmp_mappings
+})
 
 -- Indent Blankline setup
 local highlight = {
@@ -335,27 +448,6 @@ local col = vim.fn.col('.') - 1
 return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') ~= nil
 end
 
-local cmp = require('cmp')
-local cmp_select = {behavior = cmp.SelectBehavior.Select}
-local cmp_mappings = lsp.defaults.cmp_mappings({
-['<Tab>'] = function(fallback)
-print(cmp.visible())
-if cmp.visible() then
-	cmp.confirm({ select = true })
-elseif require('copilot.suggestion').is_visible() then
-	require('copilot.suggestion').accept()
-elseif check_back_space() then
-	fallback()
-else
-	cmp.complete()
-	end
-	end,
-})
-
-lsp.setup_nvim_cmp({
-mapping = cmp_mappings
-})
-
 lsp.set_preferences({
 suggest_lsp_servers = false,
 sign_icons = {
@@ -384,38 +476,4 @@ require("formatter").setup {
 		},
 	}
 	}
-
--- Copilot setup
-require('copilot').setup({
-panel = {
-	enabled = true,
-	auto_refresh = false,
-	keymap = {
-		jump_prev = "[[",
-		jump_next = "]]",
-		accept = "<CR>",
-		refresh = "gr",
-		open = "<M-CR>"
-	},
-	layout = {
-		position = "bottom",
-		ratio = 0.4
-	},
-},
-suggestion = {
-	enabled = true,
-	auto_trigger = true,
-	hide_during_completion = true,
-	debounce = 75,
-	keymap = {
-		accept_word = false,
-		accept_line = false,
-		next = "<C-k>",
-		prev = "<C-j>",
-		dismiss = "<C-]>",
-	},
-},
-copilot_node_command = 'node',
-server_opts_overrides = {},
-})
 EOF
