@@ -273,16 +273,6 @@ call plug#begin()
 	Plug 'ThePrimeagen/harpoon'
 	Plug 'ojroques/vim-oscyank'
 	Plug 'mhartington/formatter.nvim'
-	Plug 'zbirenbaum/copilot.lua'
-	Plug 'lukas-reineke/indent-blankline.nvim'
-	Plug 'b0o/schemastore.nvim'
-	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-
-	Plug 'MeanderingProgrammer/render-markdown.nvim'
-	Plug 'stevearc/dressing.nvim'
-	Plug 'nvim-lua/plenary.nvim'
-	Plug 'MunifTanjim/nui.nvim'
-	Plug 'yetone/avante.nvim', { 'branch': 'main', 'do': 'make' }
 call plug#end()
 
 autocmd! User avante.nvim
@@ -293,84 +283,6 @@ source ~/.config/nvim/custom-monokai.vim
 " ========== Lua Configuration ==========
 lua <<EOF
 
-require('render-markdown').setup({
-	file_types = { "markdown", "Avante" },
-})
-
-require('avante_lib').load()
-require('avante').setup({
-  ---@alias Provider "claude" | "openai" | "azure" | "gemini" | "cohere" | "copilot" | string
-  provider = "claude", -- Recommend using Claude
-  auto_suggestions_provider = "copilot", -- Since auto-suggestions are a high-frequency operation and therefore expensive, it is recommended to specify an inexpensive provider or even a free provider: copilot
-  claude = {
-    endpoint = "https://api.anthropic.com",
-    model = "claude-3-5-sonnet-20240620",
-    temperature = 0,
-    max_tokens = 4096,
-  },
-  behaviour = {
-    auto_suggestions = true, -- Experimental stage
-    auto_set_highlight_group = true,
-    auto_set_keymaps = true,
-    auto_apply_diff_after_generation = true,
-    support_paste_from_clipboard = false,
-  },
-  mappings = {
-    diff = {
-      ours = "co",
-      theirs = "ct",
-      all_theirs = "ca",
-      both = "cb",
-      cursor = "cc",
-      next = "]x",
-      prev = "[x",
-    },
-    suggestion = {
-      accept = "<M-l>",
-      next = "<M-]>",
-      prev = "<M-[>",
-      dismiss = "<C-]>",
-    },
-    jump = {
-      next = "]]",
-      prev = "[[",
-    },
-    submit = {
-      normal = "<CR>",
-      insert = "<C-s>",
-    },
-    sidebar = {
-      apply_all = "A",
-      apply_cursor = "a",
-      switch_windows = "<Tab>",
-      reverse_switch_windows = "<S-Tab>",
-    },
-  },
-  hints = { enabled = true },
-  windows = {
-    ---@type "right" | "left" | "top" | "bottom"
-    position = "right", -- the position of the sidebar
-    wrap = true, -- similar to vim.o.wrap
-    width = 40, -- default % based on available width
-    sidebar_header = {
-      align = "center", -- left, center, right for title
-      rounded = true,
-    },
-  },
-  highlights = {
-    ---@type AvanteConflictHighlights
-    diff = {
-      current = "DiffText",
-      incoming = "DiffAdd",
-    },
-  },
-  --- @class AvanteConflictUserConfig
-  diff = {
-    autojump = true,
-    ---@type string | fun(): any
-    list_opener = "copen",
-  },
-})
 
 local cmp = require('cmp')
 local lsp = require('lsp-zero')
@@ -384,8 +296,6 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
     ['<Tab>'] = function(fallback)
         if cmp.visible() then
             cmp.confirm({ select = true })
-        elseif require('copilot.suggestion').is_visible() then
-            require('copilot.suggestion').accept()
         elseif check_back_space() then
             fallback()
         else
@@ -397,34 +307,6 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
 lsp.setup_nvim_cmp({
     mapping = cmp_mappings
 })
-
--- Indent Blankline setup
-local highlight = {
-    "RainbowRed",
-    "RainbowYellow",
-    "RainbowBlue",
-    "RainbowOrange",
-    "RainbowGreen",
-    "RainbowViolet",
-    "RainbowCyan",
-}
-local hooks = require "ibl.hooks"
--- create the highlight groups in the highlight setup hook, so they are reset
--- every time the colorscheme changes
-hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
-    vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#E06C75" })
-    vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#E5C07B" })
-    vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#61AFEF" })
-    vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#D19A66" })
-    vim.api.nvim_set_hl(0, "RainbowGreen", { fg = "#98C379" })
-    vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#C678DD" })
-    vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#56B6C2" })
-end)
-
-vim.g.rainbow_delimiters = { highlight = highlight }
-require("ibl").setup { scope = { highlight = highlight } }
-
-hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
 
 -- LSP Zero setup
 local lsp = require('lsp-zero').preset("recommended")

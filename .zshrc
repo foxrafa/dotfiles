@@ -43,12 +43,12 @@ fi
 # Git aliases
 alias gv='open -a fork .'
 alias gb='git checkout'
-alias gu='gitui'
+alias lg='lazygit'
 alias s='lazysql'
 
 # Kubernetes aliases
 alias gke='kubectl --context=staging-gke-cluster'
-alias vke='kubectl --context=production-vke-cluster'
+alias vke='kubectl --context=staging-vke-cluster'
 alias production_gke='kubectl --context=production-gke-cluster'
 alias production_vke='kubectl --context=production-vke-cluster'
 
@@ -94,6 +94,28 @@ ds() {
 }
 
 # Git push with optional commit message
+gg() {
+  remote_url=$(git config --get remote.origin.url)
+  [ -z "$remote_url" ] && echo "Error: Not in a Git repository." && exit 1
+
+  current_branch=$(git rev-parse --abbrev-ref HEAD)
+  github_url="${remote_url%.git}/tree/$current_branch"
+
+  open "$github_url"
+}
+
+gtp() {
+  gt add --all
+  gt create -m "$*"
+  gt submit
+}
+
+gtm() {
+  gt add --all
+  gt modify -m "$*"
+  gt submit --cli
+}
+
 gp() {
   branch=$(git rev-parse --abbrev-ref HEAD)
   git add --all
@@ -115,9 +137,6 @@ gn() {
   gh repo create $1 --private
   git clone https://github.com/$1.git
   v
-  echo "Unmounting after nvim closed..."
-  cd
-  hdiutil detach "$VOLUME" -force
 }
 
 # Mount/unmount a disk image
