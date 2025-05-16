@@ -46,6 +46,8 @@ alias gb='git checkout'
 alias lg='lazygit'
 alias s='lazysql'
 
+alias snowden='ssh -i ~/.ssh/snowden ubuntu@ssh.rafafox.com -p 22'
+
 # Kubernetes aliases
 alias gke='kubectl --context=staging-gke-cluster'
 alias vke='kubectl --context=staging-vke-cluster'
@@ -55,6 +57,7 @@ alias production_vke='kubectl --context=production-vke-cluster'
 # Google Cloud aliases
 alias ga='gcloud auth application-default login; gcloud auth login'
 alias gli='gcloud compute instances list --format="table(name, networkInterfaces[].ipv6AccessConfigs[0].externalIpv6.notnull().list():label=EXTERNAL_IPV6, status)"'
+alias pping='/sbin/ping'
 alias ping='gping'
 
 # Filesystem and navigation aliases
@@ -76,9 +79,10 @@ alias jn='jupyter notebook'
 alias sb='open -a "Sublime Text"'
 
 # Misc aliases
-alias d='vim /Users/fox/notes/do.md'
+alias d='cd ~/notes && vim /Users/fox/notes/do.md'
 alias box='gcloud compute ssh box-rafa'
 alias lbox='multipass shell ubuntu'
+alias nmap='rustscan'
 
 # ===== Custom Functions =====
 # Docker stop all running containers
@@ -194,7 +198,6 @@ autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
-source /Users/fox/.askdjaskjdnaksdna
 bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
 bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
 bindkey "^[[A" up-line-or-beginning-search

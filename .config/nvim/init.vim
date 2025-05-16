@@ -13,6 +13,8 @@ set number
 set cursorline
 set re=0
 
+let g:polyglot_disabled = ['autoindent']
+
 " ========== Leader Key ==========
 let mapleader = "\<Space>"
 
@@ -82,7 +84,8 @@ noremap <Right> <Nop>
 " Leader key mappings
 nnoremap <leader>w :w<CR>
 nnoremap <leader>W :w<CR>
-nnoremap <leader>g :Format<CR>
+"nnoremap <leader>g :Format<CR>
+nnoremap <leader>g gg=G<CR>
 nnoremap <leader>q :wq<CR>
 nnoremap <leader>Q :q<CR>
 nnoremap <leader>rc :tabe ~/.config/nvim/init.vim<cr>
@@ -325,6 +328,61 @@ lspconfig.clangd.setup {
 	cmd = {"/Users/fox/code/espressif/esp-clang/bin/clangd"}
 }
 
+lspconfig.rust_analyzer.setup({
+    capabilities = capabilities,
+    on_attach = on_attach,
+    settings = {
+        ["rust-analyzer"] = {
+            assist = {
+                importGranularity = "module",
+                importPrefix = "self",
+            },
+            cargo = {
+                allFeatures = true,
+            },
+            procMacro = {
+                enable = true
+            },
+            checkOnSave = {
+                command = "clippy"
+            },
+            completion = {
+                autoimport = {
+                    enable = true
+                }
+            }
+        }
+    }
+})
+
+-- TODO, still not getting autocomplete for matlab, just intellisense
+lspconfig.matlab_ls.setup {
+  filetypes = { 'm', 'matlab' },
+  settings = {
+    matlab = {
+			installPath = "/Applications/MATLAB_R2024b.app/bin/matlab"
+    }
+  }
+}
+
+vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
+  pattern = "*.m",
+  callback = function() 
+    vim.bo.filetype = "matlab"
+  end
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "rust",
+  callback = function()
+    print("Rust FileType autocmd triggered")
+    vim.opt_local.tabstop = 2
+    vim.opt_local.shiftwidth = 2
+    vim.opt_local.softtabstop = 2
+    vim.opt_local.expandtab = true
+  end,
+})
+
 local function check_back_space()
 local col = vim.fn.col('.') - 1
 return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') ~= nil
@@ -358,4 +416,5 @@ require("formatter").setup {
 		},
 	}
 	}
+
 EOF

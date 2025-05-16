@@ -17,7 +17,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 
 	sudo apt-get install git build-essential ripgrep pip neovim libssl-dev
 
-	wget https://github.com/neovim/neovim/releases/download/v0.10.0/nvim-linux64.tar.gz
+	wget https://github.com/neovim/neovim/releases/download/v0.11.1/nvim-linux-x86_64.tar.gz
 	tar xzf nvim-linux64.tar.gz
 	sudo mv nvim-linux64 /usr/local/
 	sudo ln -s /usr/local/nvim-linux64/bin/nvim /usr/local/bin/nvim
