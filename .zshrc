@@ -46,7 +46,7 @@ alias gb='git checkout'
 alias lg='lazygit'
 alias s='lazysql'
 
-alias snowden='ssh -i ~/.ssh/snowden ubuntu@ssh.rafafox.com -p 22'
+alias snowden='ssh -i ~/.ssh/snowden fox@ssh.rafafox.com -p 22'
 
 # Kubernetes aliases
 alias gke='kubectl --context=staging-gke-cluster'
