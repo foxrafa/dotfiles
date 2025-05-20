@@ -39,12 +39,12 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 	mkdir ~/.config
 	ln -s ~/dotfiles/.config/nvim ~/.config/nvim
 
-	ln -s ~/dotfiles/.config/nvim ~/.config/btop
-	ln -s ~/dotfiles/.config/nvim ~/.config/htop
-	ln -s ~/dotfiles/.config/nvim ~/.config/iterm2
-	ln -s ~/dotfiles/.config/nvim ~/.config/raycast
-	ln -s ~/dotfiles/.config/nvim ~/.config/wireshark
-	ln -s ~/dotfiles/.config/nvim ~/.config/karabiner
+	ln -s ~/dotfiles/.config/btop ~/.config/btop
+	ln -s ~/dotfiles/.config/htop ~/.config/htop
+	ln -s ~/dotfiles/.config/iterm2 ~/.config/iterm2
+	ln -s ~/dotfiles/.config/raycast ~/.config/raycast
+	ln -s ~/dotfiles/.config/wireshark ~/.config/wireshark
+	ln -s ~/dotfiles/.config/karabiner ~/.config/karabiner
 
 	sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
