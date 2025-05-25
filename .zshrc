@@ -39,6 +39,7 @@ if [ $commands[kubectl] ]; then
   source ~/.zsh/kubectl_completion.sh
 fi
 
+alias c=clear
 alias who=/usr/bin/w
 alias w=watch -n 1
 # ===== Aliases =====
