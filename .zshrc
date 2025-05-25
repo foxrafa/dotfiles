@@ -39,6 +39,8 @@ if [ $commands[kubectl] ]; then
   source ~/.zsh/kubectl_completion.sh
 fi
 
+alias who=/usr/bin/w
+alias w=watch -n 1
 # ===== Aliases =====
 # Git aliases
 alias gv='open -a fork .'
@@ -47,7 +49,50 @@ alias lg='lazygit'
 alias s='lazysql'
 
 alias snowden='ssh -i ~/.ssh/snowden fox@ssh.rafafox.com -p 22'
-alias groq='ssh rfox'
+test_direct_connection() {
+    WORK_IP=$(ssh -o ConnectTimeout=3 -A -J fox@ssh.rafafox.com rfox@localhost -p 2222 \
+        "ifconfig en0 | grep 'inet ' | grep -v 127.0.0.1 | awk '{print \$2}'" 2>/dev/null)
+    
+    if [[ -z "$WORK_IP" ]]; then
+        return 1
+    fi
+    
+    
+    if ssh -o ConnectTimeout=3 rfox@$WORK_IP "echo 'success'" >/dev/null 2>&1; then
+        export WORK_MAC_IP="$WORK_IP"
+        return 0
+    else
+        return 1
+    fi
+}
+
+groq() {
+    ssh-add ~/.ssh/snowden 2>/dev/null
+    
+    if test_direct_connection; then
+        echo "Connecting directly to $WORK_MAC_IP"
+        ssh rfox@$WORK_MAC_IP
+    else
+        echo "Using tunnel"
+        ssh -A -J fox@ssh.rafafox.com rfox@localhost -p 2222
+    fi
+}
+
+groqd() {
+    ssh-add ~/.ssh/snowden 2>/dev/null
+    
+    if test_direct_connection; then
+        echo "Opening VNC directly to $WORK_MAC_IP"
+        open vnc://$WORK_MAC_IP:5900
+    else
+        echo "Setting up tunnel for VNC"
+        pkill -f "ssh.*5900.*" 2>/dev/null
+        ssh -A -f -N -J fox@ssh.rafafox.com -L 5900:Rafaels-Mac.local:5900 rfox@localhost -p 2222
+        sleep 2
+        open vnc://localhost:5900
+    fi
+}
+alias groqvm='ssh rfox'
 
 # Kubernetes aliases
 alias gke='kubectl --context=staging-gke-cluster'
