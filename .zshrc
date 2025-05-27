@@ -148,11 +148,14 @@ ds() {
 gg() {
   remote_url=$(git config --get remote.origin.url)
   [ -z "$remote_url" ] && echo "Error: Not in a Git repository." && exit 1
-
   current_branch=$(git rev-parse --abbrev-ref HEAD)
   github_url="${remote_url%.git}/tree/$current_branch"
-
-  open "$github_url"
+  
+  if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+    echo "$github_url"
+  else
+    open "$github_url"
+  fi
 }
 
 gtp() {
