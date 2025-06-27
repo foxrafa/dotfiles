@@ -3,6 +3,8 @@ export PATH="/opt/homebrew/Cellar/bison/3.8.2/bin:$PATH"
 export PATH="$PATH:/Users/fox/bin:/opt/homebrew/bin:/opt/nvim/:/opt/nvim-linux64/bin:/opt/homebrew/bin/magick:$HOME/go/bin"
 export DYLD_LIBRARY_PATH="/opt/homebrew/lib:/opt/homebrew/bin:$DYLD_LIBRARY_PATH"
 
+alias un="security unlock-keychain ~/Library/Keychains/login.keychain-db"
+
 # ===== History Settings =====
 HISTFILE=~/.zsh_history
 HISTSIZE=3000000
@@ -170,6 +172,18 @@ gtm() {
   gt add --all
   gt modify -m "$*"
   gt submit --cli
+}
+
+gm() {
+    local message="$*"
+    local branch=$(echo "$message" | tr ' ' '-')
+    git checkout -b "$branch" &&
+    git add . &&
+    git commit -m "$message" &&
+    git push -u origin "$branch" &&
+    git checkout main &&
+    git merge "$branch" &&
+    git push origin main &&
 }
 
 gp() {
