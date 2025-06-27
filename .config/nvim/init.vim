@@ -107,6 +107,8 @@ nnoremap <leader>7 :tabnext 7<CR>
 nnoremap <leader>8 :tabnext 8<CR>
 nnoremap <leader>9 :tabnext 9<CR>
 
+nnoremap <leader>d :lua vim.diagnostic.open_float()<CR>
+
 " Other mappings
 nnoremap D dd
 nnoremap C 0c$
@@ -314,13 +316,13 @@ lsp.setup_nvim_cmp({
 -- LSP Zero setup
 local lsp = require('lsp-zero').preset("recommended")
 
-lsp.ensure_installed({
-'bashls',
-'ts_ls',
-'pyright',
-'vimls',
-'lua_ls'
-})
+-- lsp.ensure_installed({
+-- 'bashls',
+-- 'ts_ls',
+-- 'pyright',
+-- 'vimls',
+-- 'lua_ls'
+-- })
 
 local lspconfig = require'lspconfig'
 

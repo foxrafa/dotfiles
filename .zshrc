@@ -49,7 +49,9 @@ alias gb='git checkout'
 alias lg='lazygit'
 alias s='lazysql'
 
-alias snowden='ssh -i ~/.ssh/snowden fox@ssh.rafafox.com -p 22'
+alias idf='source ~/esp/esp-idf/export.sh'
+alias snowden='ssh -i ~/.ssh/snowden-key.pem fox@ssh.rafafox.com -p 22'
+alias rsnowden='oci compute instance action --instance-id ocid1.instance.oc1.iad.anuwcljtmqlj3vycbpyeqvwcovqaw25lsb4acf3xcalcvdielmaxfwdhuava --action SOFTRESET && echo "Reboot initiated for instance: snowden"'
 test_direct_connection() {
     WORK_IP=$(ssh -o ConnectTimeout=3 -A -J fox@ssh.rafafox.com rfox@localhost -p 2222 \
         "ifconfig en0 | grep 'inet ' | grep -v 127.0.0.1 | awk '{print \$2}'" 2>/dev/null)
@@ -68,11 +70,11 @@ test_direct_connection() {
 }
 
 groq() {
-    ssh-add ~/.ssh/snowden 2>/dev/null
+    ssh-add ~/.ssh/snowden-key.pem 2>/dev/null
     
     if test_direct_connection; then
         echo "Connecting directly to $WORK_MAC_IP"
-        ssh rfox@$WORK_MAC_IP
+        ssh -A rfox@$WORK_MAC_IP
     else
         echo "Using tunnel"
         ssh -A -J fox@ssh.rafafox.com rfox@localhost -p 2222
@@ -80,7 +82,7 @@ groq() {
 }
 
 groqd() {
-    ssh-add ~/.ssh/snowden 2>/dev/null
+    ssh-add ~/.ssh/snowden-key.pem 2>/dev/null
     
     if test_direct_connection; then
         echo "Opening VNC directly to $WORK_MAC_IP"
