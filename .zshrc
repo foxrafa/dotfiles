@@ -41,7 +41,7 @@ if [ $commands[kubectl] ]; then
   source ~/.zsh/kubectl_completion.sh
 fi
 
-alias c=clear
+alias c="lines=$(tput lines); for i in $(seq 1 $((lines + 50))); do echo; done && printf "\033[${lines}A""
 alias who=/usr/bin/w
 alias w=watch -n 1
 # ===== Aliases =====
