@@ -50,6 +50,8 @@ alias gv='open -a fork .'
 alias gb='git checkout'
 alias lg='lazygit'
 alias s='lazysql'
+alias fwd='readlink -e'
+alias claude='~/.claude/local/claude'
 
 alias idf='source ~/esp/esp-idf/export.sh'
 alias snowden='ssh -i ~/.ssh/snowden-key.pem fox@ssh.rafafox.com -p 22'
@@ -277,3 +279,7 @@ bindkey "^[OB" down-line-or-beginning-search
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
