@@ -85,20 +85,27 @@ groq() {
     fi
 }
 
-groqd() {
-    ssh-add ~/.ssh/snowden-key.pem 2>/dev/null
-    
-    if test_direct_connection; then
-        echo "Opening VNC directly to $WORK_MAC_IP"
-        open vnc://$WORK_MAC_IP:5900
-    else
-        echo "Setting up tunnel for VNC"
-        pkill -f "ssh.*5900.*" 2>/dev/null
-        ssh -A -f -N -J fox@ssh.rafafox.com -L 5900:Rafaels-Mac.local:5900 rfox@localhost -p 2222
-        sleep 2
-        open vnc://localhost:5900
-    fi
+groqd () {
+	ssh-add ~/.ssh/snowden-key.pem 2> /dev/null
+	if test_direct_connection
+	then
+		echo "Opening VNC directly to $WORK_MAC_IP"
+		open vnc://$WORK_MAC_IP:5900
+	else
+		echo "Setting up tunnel for VNC via ssh.rafafox.com on localhost:5901"
+		# kill any existing SSH tunnels on local port 5901
+		pkill -f "ssh.*5901.*" 2> /dev/null
+
+		ssh -A -N -f \
+		  -J fox@ssh.rafafox.com \
+		  -L 5901:localhost:5900 \
+		  rfox@localhost -p 2222
+
+		sleep 2
+		open vnc://localhost:5901
+	fi
 }
+
 alias groqvm='ssh rfox'
 
 # Kubernetes aliases

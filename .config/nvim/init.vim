@@ -109,6 +109,8 @@ nnoremap <leader>9 :tabnext 9<CR>
 
 nnoremap <leader>d :lua vim.diagnostic.open_float()<CR>
 
+nnoremap <leader>a :%s/
+
 " Other mappings
 nnoremap D dd
 nnoremap C 0c$
