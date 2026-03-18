@@ -92,11 +92,11 @@ nnoremap <leader>rc :tabe ~/.config/nvim/init.vim<cr>
 nnoremap <leader>t :tabe test.js<cr>
 nnoremap <leader>e :tabe<cr>
 nnoremap <leader>in :normal magg=G`a<cr>
-nnoremap <leader>po :tabe postSave.sh<cr>
+"nnoremap <leader>po :tabe postSave.sh<cr>
 nnoremap <leader>i :normal gg=G``<cr>
 
 " Tab navigation
-nnoremap <leader>h :tabnew<CR>
+nnoremap <leader>h :tabnew .<CR>
 nnoremap <leader>1 :tabnext 1<CR>
 nnoremap <leader>2 :tabnext 2<CR>
 nnoremap <leader>3 :tabnext 3<CR>
@@ -106,6 +106,8 @@ nnoremap <leader>6 :tabnext 6<CR>
 nnoremap <leader>7 :tabnext 7<CR>
 nnoremap <leader>8 :tabnext 8<CR>
 nnoremap <leader>9 :tabnext 9<CR>
+
+nnoremap <leader>! :lua for _, win in ipairs(vim.api.nvim_list_wins()) do if vim.api.nvim_win_get_config(win).relative ~= '' then vim.api.nvim_win_close(win, true) end end<CR>
 
 nnoremap <leader>d :lua vim.diagnostic.open_float()<CR>
 
@@ -150,27 +152,6 @@ let g:vimtex_quickfix_enabled = 0
 let g:tex_flavor='latex'
 let g:vimtex_view_method='zathura'
 
-" Vimspector
-nnoremap <Leader>l :call vimspector#Launch()<CR>
-nnoremap <Leader>L :call vimspector#Reset()<CR>
-nnoremap <Leader>c :call vimspector#RunToCursor()<CR>
-nnoremap <Leader>C :call vimspector#Continue()<CR>
-nnoremap <Leader>i :call vimspector#StepInto()<CR>
-nnoremap <Leader>o :call vimspector#StepOver()<CR>
-nnoremap <Leader>O :call vimspector#StepOut()<CR>
-nnoremap <Leader>b :call vimspector#ToggleBreakpoint()<CR>
-nnoremap <Leader>B :call vimspector#ClearBreakpoints()<CR>
-nnoremap <Leader>p :call vimspector#Pause()<CR>
-nnoremap <Leader>v <Plug>VimspectorBalloonEval
-xmap <Leader>v <Plug>VimspectorBalloonEval
-
-command! VimspectorResetAndRestart call VimspectorResetAndRestartFunc()
-function! VimspectorResetAndRestartFunc()
-	call vimspector#Evaluate("-exec monitor reset")
-	call vimspector#Restart()
-endfunction
-nnoremap <Leader>R :VimspectorResetAndRestart<CR>
-
 " Harpoon
 nnoremap mm :lua require("harpoon.mark").add_file()<CR>
 nnoremap M :lua require("harpoon.ui").toggle_quick_menu()<CR>
@@ -179,8 +160,44 @@ nnoremap <F6> :lua require("harpoon.ui").nav_file(2)<CR>
 nnoremap <F7> :lua require("harpoon.ui").nav_file(3)<CR>
 nnoremap <F8> :lua require("harpoon.ui").nav_file(4)<CR>
 
+nnoremap <Leader>l :DapContinue<CR>
+nnoremap <Leader>L :lua require('dap').terminate(); require('dapui').close()<CR>
+nnoremap <Leader>c :lua require('dap').run_to_cursor()<CR>
+nnoremap <Leader>C :DapContinue<CR>
+nnoremap <Leader>i :DapStepInto<CR>
+nnoremap <Leader>o :DapStepOver<CR>
+nnoremap <Leader>O :DapStepOut<CR>
+nnoremap <Leader>b :DapToggleBreakpoint<CR>
+nnoremap <Leader>B :lua require('dap').clear_breakpoints()<CR>
+nnoremap <Leader>p :lua require('dap').pause()<CR>
+nnoremap <Leader>v :lua require('dapui').eval()<CR>
+nnoremap <Leader>R :lua require('dap').restart()<CR>
+
+" Vimspector
+"nnoremap <Leader>l :call vimspector#Launch()<CR>
+"nnoremap <Leader>L :call vimspector#Reset()<CR>
+"nnoremap <Leader>c :call vimspector#RunToCursor()<CR>
+"nnoremap <Leader>C :call vimspector#Continue()<CR>
+"nnoremap <Leader>i :call vimspector#StepInto()<CR>
+"nnoremap <Leader>o :call vimspector#StepOver()<CR>
+"nnoremap <Leader>O :call vimspector#StepOut()<CR>
+"nnoremap <Leader>b :call vimspector#ToggleBreakpoint()<CR>
+"nnoremap <Leader>B :call vimspector#ClearBreakpoints()<CR>
+"nnoremap <Leader>p :call vimspector#Pause()<CR>
+"nnoremap <Leader>v <Plug>VimspectorBalloonEval
+"xmap <Leader>v <Plug>VimspectorBalloonEval
+
+"command! VimspectorResetAndRestart call VimspectorResetAndRestartFunc()
+"function! VimspectorResetAndRestartFunc()
+	"call vimspector#Evaluate("-exec monitor reset")
+	"call vimspector#Restart()
+"endfunction
+"nnoremap <Leader>R :VimspectorResetAndRestart<CR>
+
 " OSCYank
 vnoremap <leader>y y:OSCYankVisual<CR>
+nnoremap <leader>F :<C-u>let @a = expand('%:p') \| OSCYankReg a<CR>
+
 
 " YCM
 let g:ycm_confirm_extra_conf = 0
@@ -259,25 +276,31 @@ set ttimeoutlen=20
 
 " ========== Plugin Declarations ==========
 call plug#begin()
-	Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-	Plug 'junegunn/fzf.vim'
-	Plug 'preservim/nerdtree'
-	Plug 'sudar/comments.vim'
-	Plug 'easymotion/vim-easymotion'
-	Plug 'sheerun/vim-polyglot'
-	Plug 'neovim/nvim-lspconfig'
-	Plug 'williamboman/mason.nvim', {'do': ':MasonUpdate'}
-	Plug 'williamboman/mason-lspconfig.nvim'
-	Plug 'hrsh7th/nvim-cmp'
-	Plug 'hrsh7th/cmp-nvim-lsp'
-	Plug 'L3MON4D3/LuaSnip'
-	Plug 'VonHeikemen/lsp-zero.nvim', {'branch': 'v2.x'}
-	Plug 'lervag/vimtex'
-	Plug 'puremourning/vimspector'
-	Plug 'nvim-lua/plenary.nvim'
-	Plug 'ThePrimeagen/harpoon'
-	Plug 'ojroques/vim-oscyank'
-	Plug 'mhartington/formatter.nvim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'preservim/nerdtree'
+Plug 'sudar/comments.vim'
+Plug 'easymotion/vim-easymotion'
+Plug 'sheerun/vim-polyglot'
+Plug 'neovim/nvim-lspconfig'
+Plug 'williamboman/mason.nvim', {'do': ':MasonUpdate'}
+Plug 'williamboman/mason-lspconfig.nvim'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'L3MON4D3/LuaSnip'
+Plug 'VonHeikemen/lsp-zero.nvim', {'branch': 'v2.x'}
+Plug 'lervag/vimtex'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'ThePrimeagen/harpoon'
+Plug 'ojroques/vim-oscyank'
+Plug 'mhartington/formatter.nvim'
+Plug 'puremourning/vimspector'
+
+Plug 'mfussenegger/nvim-dap'
+Plug 'rcarriga/nvim-dap-ui'
+Plug 'nvim-neotest/nvim-nio'  " required by dap-ui
+Plug 'jedrzejboczar/nvim-dap-cortex-debug'  " for embedded
+Plug 'igorlfs/nvim-dap-view'
 call plug#end()
 
 autocmd! User avante.nvim
@@ -285,32 +308,34 @@ autocmd! User avante.nvim
 " ========== Source Custom Colorscheme ==========
 source ~/.config/nvim/custom-monokai.vim
 
+luafile ~/.config/nvim/dap.lua
+
+
 " ========== Lua Configuration ==========
 lua <<EOF
-
 
 local cmp = require('cmp')
 local lsp = require('lsp-zero')
 
 local function check_back_space()
-    local col = vim.fn.col('.') - 1
-    return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') ~= nil
+local col = vim.fn.col('.') - 1
+return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') ~= nil
 end
 
 local cmp_mappings = lsp.defaults.cmp_mappings({
-    ['<Tab>'] = function(fallback)
-        if cmp.visible() then
-            cmp.confirm({ select = true })
-        elseif check_back_space() then
-            fallback()
-        else
-            cmp.complete()
-        end
-    end,
+['<Tab>'] = function(fallback)
+if cmp.visible() then
+	cmp.confirm({ select = true })
+elseif check_back_space() then
+	fallback()
+else
+	cmp.complete()
+	end
+	end,
 })
 
 lsp.setup_nvim_cmp({
-    mapping = cmp_mappings
+mapping = cmp_mappings
 })
 
 -- LSP Zero setup
@@ -326,63 +351,66 @@ local lsp = require('lsp-zero').preset("recommended")
 
 local lspconfig = require'lspconfig'
 
-lspconfig.clangd.setup {
-	cmd = {"/Users/fox/code/espressif/esp-clang/bin/clangd"}
-}
-
 lspconfig.rust_analyzer.setup({
-    capabilities = capabilities,
-    on_attach = on_attach,
-    settings = {
-        ["rust-analyzer"] = {
-            assist = {
-                importGranularity = "module",
-                importPrefix = "self",
-            },
-            cargo = {
-                allFeatures = true,
-            },
-            procMacro = {
-                enable = true
-            },
-            checkOnSave = {
-                command = "clippy"
-            },
-            completion = {
-                autoimport = {
-                    enable = true
-                }
-            }
-        }
-    }
+capabilities = capabilities,
+on_attach = on_attach,
+settings = {
+	["rust-analyzer"] = {
+		assist = {
+			importGranularity = "module",
+			importPrefix = "self",
+		},
+		cargo = {
+			allFeatures = true,
+		},
+		procMacro = {
+			enable = true
+		},
+		checkOnSave = {
+			command = "clippy"
+		},
+		completion = {
+			autoimport = {
+				enable = true
+			}
+			}
+		}
+	}
+})
+
+lspconfig.clangd.setup({
+  cmd = {
+    "clangd",
+    "--query-driver=/opt/arm-gnu-toolchain-12.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-*",
+  },
 })
 
 -- TODO, still not getting autocomplete for matlab, just intellisense
 lspconfig.matlab_ls.setup {
-  filetypes = { 'm', 'matlab' },
-  settings = {
-    matlab = {
+	filetypes = { 'm', 'matlab' },
+	settings = {
+		matlab = {
 			installPath = "/Applications/MATLAB_R2024b.app/bin/matlab"
-    }
-  }
-}
+		}
+		}
+	}
 
 vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
-  pattern = "*.m",
-  callback = function() 
-    vim.bo.filetype = "matlab"
-  end
+	pattern = "*.m",
+	callback = function() 
+	vim.bo.filetype = "matlab"
+	end
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = "rust",
-  callback = function()
-    print("Rust FileType autocmd triggered")
-    vim.opt_local.tabstop = 2
-    vim.opt_local.shiftwidth = 2
-    vim.opt_local.softtabstop = 2
-    vim.opt_local.expandtab = true
-  end,
+	pattern = "rust",
+	callback = function()
+	print("Rust FileType autocmd triggered")
+	vim.opt_local.tabstop = 2
+	vim.opt_local.shiftwidth = 2
+	vim.opt_local.softtabstop = 2
+	vim.opt_local.expandtab = true
+	end,
 })
 
 local function check_back_space()
@@ -405,6 +433,17 @@ end)
 
 lsp.setup()
 
+vim.diagnostic.config({
+virtual_text = {
+	source = "if_many", -- show which LSP it came from
+	},
+	float = {
+		border = "rounded",
+		source = "always",
+		},
+		severity_sort = true,
+})
+
 -- Formatter setup
 local util = require "formatter.util"
 
@@ -412,10 +451,10 @@ require("formatter").setup {
 	filetype = {
 		javascript = {
 			require("formatter.filetypes.javascript").prettier
-		},
-		javascriptreact = {
-			require("formatter.filetypes.javascriptreact").prettier
-		},
+			},
+			javascriptreact = {
+				require("formatter.filetypes.javascriptreact").prettier
+				},
 	}
 	}
 
